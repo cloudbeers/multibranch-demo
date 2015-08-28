@@ -1,11 +1,11 @@
 #!groovy
-stage 'checkout'
-node {
-  checkout scm
-  stage 'build'
-  docker.image('golang:1.5.0').inside {
-    sh 'go build -v hello-world.go'
-  }
-  sh 'ls -l'
-  sh './hello-world'
+standardBuild {
+    environment = 'golang:1.5.0'
+    mainScript = '''
+go build -v hello-world.go
+'''
+    postScript = '''
+ls -l
+./hello-world
+'''
 }
