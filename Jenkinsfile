@@ -1,6 +1,6 @@
 #!groovy
 standardBuild {
-    environment = 'golang:1.5.0'
+    environment = 'golang:1.4.2'
     mainScript = '''
 go build -v hello-world.go
 '''
