@@ -12,10 +12,12 @@ ls -l
 }
 parallel a: {
     node {
-        sh 'echo ran branch a'
+        retry(5) {
+            sh 'sleep 5 && echo ran branch a'
+        }
     }
 }, b: {
     node {
-        sh 'echo ran branch b'
+        sh 'sleep 10 && echo ran branch b'
     }
 }
