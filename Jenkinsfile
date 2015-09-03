@@ -10,3 +10,12 @@ ls -l
 ./hello-world
 '''
 }
+parallel a: {
+    node {
+        sh 'echo ran branch a'
+    }
+}, b: {
+    node {
+        sh 'echo ran branch b'
+    }
+}
