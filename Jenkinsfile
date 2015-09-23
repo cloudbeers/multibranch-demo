@@ -6,7 +6,7 @@ standardBuild {
 go build -v hello-world.go
 '''
     postScript = '''
-ls -l
+ls -la
 ./hello-world
 '''
 }
