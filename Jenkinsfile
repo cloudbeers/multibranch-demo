@@ -1,7 +1,7 @@
 #!groovy
+echo "Hello"
 // Loads: https://gist.github.com/jglick/b13b509bc236566c8829
 standardBuild {
-    echo "Hello"
     environment = 'golang:1.5.0'
     mainScript = '''
 go version
