@@ -3,10 +3,10 @@ standardBuild {
     environment = 'golang:1.5.0'
     mainScript = '''
 go version
-go build -v hello-world.go
+go build -v hello.go
 '''
     postScript = '''
 ls -l
-./hello-world
+./hello
 '''
 }
