@@ -1,4 +1,4 @@
-@Library('github.com/cloudbeers/multibranch-demo-lib') _
+@Library('github.com/cloudbeers/multibranch-demo-lib@0037657') _
 standardBuild {
     environment = 'golang:1.5.0'
     mainScript = '''
