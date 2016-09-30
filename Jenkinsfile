@@ -10,3 +10,4 @@ ls -l
 ./hello-world
 '''
 }
+input 'Ready to deploy?'
