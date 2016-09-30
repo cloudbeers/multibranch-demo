@@ -7,6 +7,7 @@ go build -v hello-world.go
 '''
     postScript = '''
 ls -l
+echo yolo
 ./hello-world
 '''
 }
