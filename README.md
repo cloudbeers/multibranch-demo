@@ -1,2 +1,2 @@
-Simple demonstration of how to use multibranch Pipelines.
+Mostly Simple demonstration of how to use multibranch Pipelines.
 [Demo](https://hub.docker.com/r/jenkinsci/pipeline-as-code-github-demo/)
