@@ -6,6 +6,7 @@ go version
 go build -v hello-world.go
 '''
     postScript = '''
+echo 'starting...'
 ./hello-world
 '''
 }
