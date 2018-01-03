@@ -1,13 +1,10 @@
-#!groovy
-// Loads: https://gist.github.com/jglick/b13b509bc236566c8829
-standardBuild {
-    environment = 'golang:1.7'
-    mainScript = '''
+@Library('github.com/cloudbeers/multibranch-demo-lib') _
+standardBuild environment: 'golang:1.7',
+    mainScript: '''
 go version
 go build -v hello-world.go
-'''
-    postScript = '''
+''',
+    postScript: '''
 ls -l
 ./hello-world
 '''
-}
