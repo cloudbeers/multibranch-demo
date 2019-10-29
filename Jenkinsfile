@@ -1,21 +1,52 @@
-// This shows a simple example of how to archive the build output artifacts. 
 node { 
-    stage "Create build output" 
-     
-    // Make the output directory. 
-    sh "mkdir -p output" 
+    git url: 'https://github.com/jfrogdev/project-examples.git' 
  
 
-// Write an useful file, which is needed to be archived. 
-    writeFile file: "output/usefulfile.txt", text: "This file is useful, need to archive it." 
+// Get Artifactory server instance, defined in the Artifactory Plugin administration page. 
+    def server = Artifactory.server "SERVER_ID" 
  
 
-// Write an useless file, which is not needed to be archived. 
-    writeFile file: "output/uselessfile.md", text: "This file is useless, no need to archive it." 
+// Read the upload spec and upload files to Artifactory. 
+    def downloadSpec = 
+            '''{ 
+            "files": [ 
+                { 
+                    "pattern": "libs-snapshot-local/*.zip", 
+                    "target": "dependencies/", 
+                    "props": "p1=v1;p2=v2" 
+                } 
+            ] 
+        }''' 
  
 
-stage "Archive build output" 
-     
-    // Archive the build output artifacts. 
-    archiveArtifacts artifacts: 'output/*.txt', excludes: 'output/*.md' 
-}
+def buildInfo1 = server.download spec: downloadSpec 
+ 
+
+// Read the upload spec which was downloaded from github. 
+    def uploadSpec = 
+            '''{ 
+            "files": [ 
+                { 
+                    "pattern": "resources/Kermit.*", 
+                    "target": "libs-snapshot-local", 
+                    "props": "p1=v1;p2=v2" 
+                }, 
+                { 
+                    "pattern": "resources/Frogger.*", 
+                    "target": "libs-snapshot-local" 
+                } 
+            ] 
+        }''' 
+ 
+
+// Upload to Artifactory. 
+    def buildInfo2 = server.upload spec: uploadSpec 
+ 
+
+// Merge the upload and download build-info objects. 
+    buildInfo1.append buildInfo2 
+ 
+
+// Publish the build to Artifactory 
+    server.publishBuildInfo buildInfo1 
+} 
