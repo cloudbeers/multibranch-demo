@@ -3,7 +3,7 @@ node {
  
 
 // Get Artifactory server instance, defined in the Artifactory Plugin administration page. 
-    def server = Artifactory.server "SERVER_ID" 
+    def server = Artifactory.server "Artifactory-1" 
  
 
 // Read the upload spec and upload files to Artifactory. 
