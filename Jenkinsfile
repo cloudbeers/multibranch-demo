@@ -1,11 +1,52 @@
-@Library('github.com/cloudbeers/multibranch-demo-lib') _
-properties([parameters([string(name: 'goVersion', defaultValue: '1.5.0', description: 'Which version of Go language to use.')])])
-standardBuild environment: "golang:${params.goVersion}",
-    mainScript: '''
-go version
-go build -v hello-world.go
-''',
-    postScript: '''
-ls -l
-./hello-world
-'''
+node { 
+    git url: 'https://github.com/jfrogdev/project-examples.git' 
+ 
+
+// Get Artifactory server instance, defined in the Artifactory Plugin administration page. 
+    def server = Artifactory.server 'Artifactory Version 4.15.0'
+ 
+
+// Read the upload spec and upload files to Artifactory. 
+    def downloadSpec = 
+            '''{ 
+            "files": [ 
+                { 
+                    "pattern": "libs-snapshot-local/*.zip", 
+                    "target": "dependencies/", 
+                    "props": "p1=v1;p2=v2" 
+                } 
+            ] 
+        }''' 
+ 
+
+def buildInfo1 = server.download spec: downloadSpec 
+ 
+
+// Read the upload spec which was downloaded from github. 
+    def uploadSpec = 
+            '''{ 
+            "files": [ 
+                { 
+                    "pattern": "resources/Kermit.*", 
+                    "target": "libs-snapshot-local", 
+                    "props": "p1=v1;p2=v2" 
+                }, 
+                { 
+                    "pattern": "resources/Frogger.*", 
+                    "target": "libs-snapshot-local" 
+                } 
+            ] 
+        }''' 
+ 
+
+// Upload to Artifactory. 
+    def buildInfo2 = server.upload spec: uploadSpec 
+ 
+
+// Merge the upload and download build-info objects. 
+    buildInfo1.append buildInfo2 
+ 
+
+// Publish the build to Artifactory 
+    server.publishBuildInfo buildInfo1 
+} 
